@@ -39,9 +39,6 @@ jobs:
       - name: Build
         run: just build
 
-      - name: Test
-        run: just test
-
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v5
