@@ -13,23 +13,21 @@ _default:
 install:
   pnpm install
 
-# Builds everything (basically `cargo build`).
+# Builds the book.
 build:
   mdbook build
 
-# Test everything (basically `cargo test`).
+# Tests the book.
 test:
   mdbook test
 
 # Typically doesn't need to be run.
 # Format in editor/on commit should do this automatically.
 format:
-  cargo fmt
   pnpm format
 
 # Checks formatting for ci.
 format-ci:
-  cargo fmt --check
   pnpm format:check
 
 # Serves the book locally.

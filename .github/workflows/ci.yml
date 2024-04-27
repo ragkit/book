@@ -17,16 +17,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Tools
-        uses: ./.github/actions/setup-tools
+      - name: Setup mdBook
+        uses: ./.github/actions/mdbook
+        with:
+          mdbook-version: 0.4.37
+
+      - name: Setup just
+        uses: ./.github/actions/just
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Install
-        run: pnpm install --frozen-lockfile
-
-      - name: Check Cargo.lock
-        run: cargo update -w --locked
 
       - name: Build
         run: just build
@@ -43,8 +42,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Tools
-        uses: ./.github/actions/setup-tools
+      - name: Setup node
+        uses: ./.github/actions/node
+
+      - name: Setup just
+        uses: ./.github/actions/just
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 

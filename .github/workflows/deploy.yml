@@ -2,26 +2,37 @@ name: Deploy
 
 on:
   push:
-    branches: [main]
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
-  cancel-in-progress: true
+    branches: ["main"]
+  workflow_dispatch:
 
 permissions:
-  contents: write # To push a branch
-  pages: write # To push to a GitHub Pages site
-  id-token: write # To update the deployment status
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment, skipping runs queued between the run
+# in-progress and latest queued. However, do NOT cancel in-progress runs as we
+# want to allow these production deployments to complete.
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
 
 jobs:
   deploy:
+    environment:
+      name: github-pages
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Tools
-        uses: ./.github/actions/setup-tools
+      - name: Setup mdBook
+        uses: ./.github/actions/mdbook
+        with:
+          mdbook-version: 0.4.37
+
+      - name: Setup just
+        uses: ./.github/actions/just
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -32,13 +43,13 @@ jobs:
         run: just test
 
       - name: Setup Pages
-        uses: actions/configure-pages@v4
+        id: pages
+        uses: actions/configure-pages@v5
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload entire repository
-          path: "book"
+          path: book
 
       - name: Deploy to GitHub Pages
         id: deployment
