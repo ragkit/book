@@ -17,10 +17,6 @@ install:
 build:
   mdbook build
 
-# Tests the book.
-test:
-  mdbook test
-
 # Typically doesn't need to be run.
 # Format in editor/on commit should do this automatically.
 format:

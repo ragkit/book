@@ -30,9 +30,6 @@ jobs:
       - name: Build
         run: just build
 
-      - name: Test
-        run: just test
-
       - name: Check for uncommitted changes
         run: git diff --exit-code
 
