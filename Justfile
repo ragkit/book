@@ -28,4 +28,4 @@ format-ci:
 
 # Serves the book locally.
 serve:
-  mdbook serve -o -p 5000
+  mdbook serve -o -p 3010
