@@ -21,30 +21,3 @@ runs:
       uses: extractions/setup-just@v1
       env:
         GITHUB_TOKEN: ${{ inputs.github-token }}
-
-    - name: Install rust
-      uses: dsherret/rust-toolchain-file@v1
-
-    - name: Export environment variables
-      shell: bash
-      run: |
-        echo "CARGO_TERM_COLOR=always" >> $GITHUB_ENV
-        echo "CARGO_INCREMENTAL=0" >> $GITHUB_ENV
-
-    # Note: this action inspects the environment and variables starting with
-    # `CARGO_` are used as part of the cache key.
-    #
-    # If users of this composite action add additional `CARGO_*` variables after
-    # this step runs, the cache key used for storing the job outputs will not
-    # match the cache key used for restoring.
-    - name: Setup rust cache
-      uses: Swatinem/rust-cache@v2.7.3
-
-    - name: Install mdbook
-      shell: bash
-      run: |
-        tag=$(curl 'https://api.github.com/repos/rust-lang/mdbook/releases/latest' | jq -r '.tag_name')
-        url="https://github.com/rust-lang/mdbook/releases/download/${tag}/mdbook-${tag}-x86_64-unknown-linux-gnu.tar.gz"
-        mkdir bin
-        curl -sSL $url | tar -xz --directory=bin
-        echo "$(pwd)/bin" >> $GITHUB_PATH

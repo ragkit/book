@@ -22,11 +22,10 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Install
-        run: pnpm install --frozen-lockfile
-
-      - name: Check Cargo.lock
-        run: cargo update -w --locked
+      - name: Setup mdBook
+        uses: ./.github/actions/mdbook
+        with:
+          mdbook-version: 0.4.36
 
       - name: Build
         run: just build

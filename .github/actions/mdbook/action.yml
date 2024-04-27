@@ -1,0 +1,19 @@
+name: Set up mdBook
+description: Set up mdBook
+
+inputs:
+  mdbook-version:
+    required: true
+    description: "the mdBook version to use"
+
+runs:
+  using: composite
+  steps:
+    - name: Install mdBook
+      shell: bash
+      env:
+        MDBOOK_VERSION: ${{ inputs.mdbook-version }}
+      run: |
+        curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf -y | sh
+        rustup update
+        cargo install --version ${MDBOOK_VERSION} mdbook
